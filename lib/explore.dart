@@ -7,6 +7,8 @@ import 'package:recipe2/Widget/drawer.dart';
 import 'package:recipe2/Widget/searchBar.dart';
 import 'package:recipe2/Widget/shared.dart';
 
+import 'Widget/category.dart';
+import 'option.dart';
 
 class Explore extends StatefulWidget {
   @override
@@ -38,7 +40,6 @@ class _ExploreState extends State<Explore> {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
@@ -48,41 +49,20 @@ class _ExploreState extends State<Explore> {
                     buildTextSubTitleVariation1(
                         'Healthy and nutritious food recipes'),
                     SizedBox(
-                      height:  ScreenUtil.getInstance().setHeight(32),
+                      height: ScreenUtil.getInstance().setHeight(32),
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          option('Vegetable', 'assets/icons/salad.png',0),
-                          SizedBox(
-                            width:  ScreenUtil.getInstance().setWidth(8),
-                          ),
-                           option('Vegetable', 'assets/icons/salad.png', 0),
-                          SizedBox(
-                            width:   ScreenUtil.getInstance().setWidth(8),
-                          ),
-                           option('Vegetable', 'assets/icons/salad.png', 0),
-                          SizedBox(
-                            width:   ScreenUtil.getInstance().setWidth(8),
-                          ),
-                          option('Rice', 'assets/icons/rice.png', 1),
-                          SizedBox(
-                            width:   ScreenUtil.getInstance().setWidth(8),
-                          ),
-                          option('Fruit', 'assets/icons/fruit.png', 2),
-                        ],
-                      ),
+                    InkWell(
+                      child: Text('Category'),
+                      onTap: () => category(context),
                     ),
                   ],
                 ),
               ),
               SizedBox(
-                height:   ScreenUtil.getInstance().setHeight(24),
+                height: ScreenUtil.getInstance().setHeight(24),
               ),
               Container(
-                height:   ScreenUtil.getInstance().setHeight(480),
+                height: ScreenUtil.getInstance().setHeight(480),
                 child: ListView(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
@@ -90,31 +70,34 @@ class _ExploreState extends State<Explore> {
                 ),
               ),
               SizedBox(
-                height:   ScreenUtil.getInstance().setHeight(16),
+                height: ScreenUtil.getInstance().setHeight(16),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                   Text('Popular',style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: blackk ,)),
+                    Text('Popular',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: blackk,
+                        )),
                     SizedBox(
-                      width:   ScreenUtil.getInstance().setWidth(8),
+                      width: ScreenUtil.getInstance().setWidth(8),
                     ),
-                    Text('Food' ,style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: Colors.grey[400],
-      )),
+                    Text('Food',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[400],
+                        )),
                   ],
                 ),
               ),
               Container(
                 height: 1550,
                 child: ListView(
-                   physics: BouncingScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   children: buildPopulars(),
                 ),
@@ -126,49 +109,9 @@ class _ExploreState extends State<Explore> {
     );
   }
 
-  Widget option(String text, String image, int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          optionSelected[index] = !optionSelected[index];
-        });
-      },
-      child: Container(
-        height:   ScreenUtil.getInstance().setHeight(60),
-        decoration: BoxDecoration(
-          color: optionSelected[index] ? kPrimaryColor : Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-          boxShadow: [kBoxShadow],
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
-          children: [
-            SizedBox(
-              height:  ScreenUtil.getInstance().setHeight(45),
-              width:   ScreenUtil.getInstance().setWidth(40),
-              child: Image.asset(
-                image,
-                color: optionSelected[index] ? whitee : blackk,
-              ),
-            ),
-            SizedBox(
-              width:   ScreenUtil.getInstance().setWidth(8),
-            ),
-            Text(
-              text,
-              style: TextStyle(
-                color: optionSelected[index] ? whitee : blackk,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget option() {
+  //   return Option(optionSelected: optionSelected);
+  // }
 
   List<Widget> buildRecipes() {
     List<Widget> list = [];
@@ -197,7 +140,7 @@ class _ExploreState extends State<Explore> {
         margin: EdgeInsets.only(
             right: 16, left: index == 0 ? 16 : 0, bottom: 16, top: 8),
         padding: EdgeInsets.all(16),
-        width:   ScreenUtil.getInstance().setWidth(300),
+        width: ScreenUtil.getInstance().setWidth(300),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -215,13 +158,11 @@ class _ExploreState extends State<Explore> {
               ),
             ),
             SizedBox(
-              height:   ScreenUtil.getInstance().setHeight(8),
+              height: ScreenUtil.getInstance().setHeight(8),
             ),
             buildRecipeTitle(recipe.title),
             Row(
-              children: [
-                Icon(Icons.visibility)
-              ],
+              children: [Icon(Icons.visibility)],
             ),
             // buildTextSubTitleVariation2(recipe.description),
             Row(
@@ -267,8 +208,8 @@ class _ExploreState extends State<Explore> {
         child: Row(
           children: [
             Container(
-              height:   ScreenUtil.getInstance().setHeight(250),
-              width:   ScreenUtil.getInstance().setWidth(280),
+              height: ScreenUtil.getInstance().setHeight(250),
+              width: ScreenUtil.getInstance().setWidth(280),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(recipe.image),
