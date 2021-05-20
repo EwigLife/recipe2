@@ -109,7 +109,7 @@ category(context) {
         );
       });
 }
-
+// this is 
 class CategoryButton extends StatelessWidget {
   CategoryButton({this.text, this.image, this.navigator});
   String image;
