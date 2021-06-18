@@ -67,34 +67,7 @@ bool optionSelected = false;
             color: Colors.black,
           ),
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: InkWell(
-              onTap: (){
-                
-                setState(() {
-  optionSelected =
-      !optionSelected;
-  if (optionSelected) {
-    
-    createFav(
-       this.widget.id);
-  } else {
-   
-    removeFav(
-        this.widget.id);
-  }
-});
-              },
-                          child: Icon(
-                Icons.favorite_border,
-                color: Colors.black,
-              ),
-              
-            ),
-          ),
-        ],
+       
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -115,51 +88,53 @@ bool optionSelected = false;
               height: 16,
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 2.4,
-              padding: EdgeInsets.only(left: 18),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      buildTextTitleVariation2('Nutritions', false),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 90,
+                 height:  300,
+                padding: EdgeInsets.only(left: 18),
+                child: Stack(
+                  children: [
+                    Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+            buildTextTitleVariation2('Nutritions', false),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 90,
+            ),
+            buildNutrition(this.widget.kcal, "Calories", "Kcal"),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 90,
+            ),
+            buildNutrition(this.widget.carb, "Carbo", "g"),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 90,
+            ),
+            buildNutrition(this.widget.protein, "Protein", "g"),
+                        ],
                       ),
-                      buildNutrition(this.widget.kcal, "Calories", "Kcal"),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 90,
-                      ),
-                      buildNutrition(this.widget.carb, "Carbo", "g"),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 90,
-                      ),
-                      buildNutrition(this.widget.protein, "Protein", "g"),
-                    ],
-                  ),
-                  Positioned(
-                    left: MediaQuery.of(context).size.height / 4,
-                    top: MediaQuery.of(context).size.height / 40,
-                    bottom: MediaQuery.of(context).size.height / 100,
-                    child: Hero(
-                      tag: widget.imgUrl,
-                      child: ClipOval(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 1.4,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(widget.imgUrl),
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
+                    ),
+                    Positioned(
+                      left: MediaQuery.of(context).size.height / 4,
+                      top: MediaQuery.of(context).size.height / 40,
+                      bottom: MediaQuery.of(context).size.height / 100,
+                      child: Hero(
+                        tag: widget.imgUrl,
+                        child: ClipOval(
+            child: Container(
+              width: MediaQuery.of(context).size.width / 1.4,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(widget.imgUrl),
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+            ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16, bottom: 80),
               child: Column(
@@ -262,35 +237,7 @@ bool optionSelected = false;
       return false;
     }
   }
-  Future<bool> createFav(
-    String id, 
-  ) async {
-    try {
-      await _firestore
-          .collection('recipies')
-          .doc(id)
-          .update({"fav.${(_auth.currentUser.email)}":_auth.currentUser.email});
-
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-   Future<bool> removeFav(
-    String id,   ) async {
-    try {
-      await _firestore
-          .collection('recipies')
-          .doc(id)
-          .update({"fav.${(_auth.currentUser.email)}":Title});
-
-      return true;
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
+ 
 }
 //  deleteData(String data) {
 //     if (chapterTitle != null) {

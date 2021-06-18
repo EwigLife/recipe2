@@ -111,7 +111,7 @@ class _ExploreState extends State<Explore> {
               height: 24,
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 2.4,
+              height: 350,
               child: RecipiesCard(),
             ),
             SizedBox(

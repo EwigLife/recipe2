@@ -11,78 +11,16 @@ import 'package:recipe2/fav/dbhelper.dart';
 import 'package:recipe2/fav/favModel.dart';
 
 class RecipiesCard extends StatefulWidget {
-  final dynamic likes;
-
-  bool optionSelected = false;
-  RecipiesCard({this.likes, this.optionSelected});
   @override
   _RecipiesCardState createState() => _RecipiesCardState();
 }
 
 class _RecipiesCardState extends State<RecipiesCard> {
-  int likeCount;
-  Map likes;
-  bool isLiked;
-  final dbhelper = Databasehelper.instance;
-  Future<List<FavRecipies>> favRecipies;
-  var dbHelper;
-  String name;
-  int curUserId;
-
-  void validate(
-    int id,
-    String title,
-    String carb,
-    String dec,
-    String imgUrl,
-    String ingr,
-    String kcal,
-    String method,
-    String protein,
-  ) {
-    FavRecipies e =
-        FavRecipies(id, title, carb, dec, imgUrl, ingr, kcal, method, protein);
-    dbHelper.save(e);
-  }
-
-  void queryall() async {
-    var allrows = await dbhelper.queryall();
-    allrows.forEach((row) {
-      print(row);
-    });
-  }
-
-  void insertdata(
-    final String title,
-    final String carb,
-    final String dec,
-    final String imgUrl,
-    final String ingr,
-    final String kcal,
-    final String method,
-    final String protein,
-  ) async {
-    Map<String, dynamic> row = {
-      Databasehelper.titleR: title,
-      Databasehelper.decR: dec,
-      Databasehelper.imgUrlR: imgUrl,
-      Databasehelper.kcalR: kcal,
-      Databasehelper.carbR: carb,
-      Databasehelper.proteinR: protein,
-      Databasehelper.ingrR: ingr,
-      Databasehelper.methodR: method,
-    };
-    final id = await dbhelper.insert(row);
-    print(id);
-  }
-
-  String currentEmail;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Map count;
-  bool isCount;
-  int numberCount = 0;
+  bool check = false;
   var number;
+
   Future getCurrentUser() async {
     final User user = await _auth.currentUser;
     final email = user.email;
@@ -90,22 +28,11 @@ class _RecipiesCardState extends State<RecipiesCard> {
     return email.toString();
   }
 
-  bool isFav = false;
-
-  void fav() {
-    setState(() {
-      isFav = true ?? false;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    widget.optionSelected = false ?? true;
-    print("init");
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -120,6 +47,7 @@ class _RecipiesCardState extends State<RecipiesCard> {
                 itemCount: recipies.length,
                 itemBuilder: (context, index) {
                   number = recipies[index].get('views');
+
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -134,67 +62,124 @@ class _RecipiesCardState extends State<RecipiesCard> {
                                   kcal: recipies[index].get('kcal'),
                                   method: recipies[index].get('method'),
                                   protein: recipies[index].get('protein'),
-                                   views: recipies[index].get('views'),
-                                   id:recipies[index].get('id'),
+                                  views: recipies[index].get('views'),
+                                  id: recipies[index].get('id'),
                                 )),
                       );
-
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
+                    child: Expanded(
+                                          child: Container(
+                                            height:200,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          boxShadow: [kBoxShadow],
                         ),
-                        boxShadow: [kBoxShadow],
-                      ),
-                      margin: EdgeInsets.only(
-                          right: 16,
-                          left: index == 0 ? 16 : 0,
-                          bottom: 16,
-                          top: 8),
-                      padding: EdgeInsets.all(10),
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Expanded(
-                            child: Hero(
-                              tag: recipies[index].get('imgUrl'),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(18.0)),
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                        recipies[index].get('imgUrl'),
-                                      ),
-                                      fit: BoxFit.fill),
+                        margin: EdgeInsets.only(
+                            right: 16,
+                            left: index == 0 ? 16 : 0,
+                            bottom: 16,
+                            top: 8),
+                        padding: EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Expanded(
+                              child: Hero(
+                                tag: recipies[index].get('imgUrl'),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(18.0)),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                          recipies[index].get('imgUrl'),
+                                        ),
+                                        fit: BoxFit.fill),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          buildRecipeTitle(recipies[index].get('title')),
-                          buildTextSubTitleVariation2(
-                              recipies[index].get('dec')),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                buildCalories(
-                                    recipies[index].get('kcal') + " Kcal"),
-                                Row(
-                                  children: [
-                                    Text('${number}'),
-                                    SizedBox(width: 10),
-                                    Icon(Icons.remove_red_eye_rounded),
-                                    SizedBox(width: 10),
-                                  ],
-                                ),
-                              ]),
-                        ],
+                            SizedBox(
+                              height: 8,
+                            ),
+                            buildRecipeTitle(recipies[index].get('title')),
+                            buildTextSubTitleVariation2(
+                                recipies[index].get('dec')),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  buildCalories(
+                                      recipies[index].get('kcal') + " Kcal"),
+                                  SizedBox(width: 5),
+                                  Row(
+                                    children: [
+                                      Text('${number}'),
+                                      SizedBox(width: 5),
+                                      Icon(Icons.remove_red_eye_rounded),
+                                      SizedBox(width: 5),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: FlatButton(
+                                        onPressed: () {
+                                          addFavorite(recipies[index].get('id'),
+                                              _auth.currentUser.email);
+                                          setState(() {
+                                            if (recipies[index].get(
+                                                    'fav.${(_auth.currentUser.email)}') ==
+                                                true) {
+                                              Scaffold.of(context)
+                                                  .showSnackBar(new SnackBar(
+                                                content:
+                                                    new Text(' Already saved'),
+                                                padding: EdgeInsets.all(10.0),
+                                                margin: EdgeInsets.all(10.0),
+                                                duration:
+                                                    const Duration(seconds: 2),
+                                                backgroundColor: Colors.red,
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(10))),
+                                              ));
+                                            }
+                                            if (recipies[index].get(
+                                                    'fav.${(_auth.currentUser.email)}') ==
+                                                false) {
+                                              Scaffold.of(context)
+                                                  .showSnackBar(new SnackBar(
+                                                content: new Text(
+                                                    '${(recipies[index].get('title'))} is saved'),
+                                                backgroundColor:
+                                                    Color(0xFF27AE60),
+                                                padding: EdgeInsets.all(10.0),
+                                                margin: EdgeInsets.all(10.0),
+                                                duration:
+                                                    const Duration(seconds: 2),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(10))),
+                                              ));
+                                            }
+
+                                            // showSnackBar('${(recipies[index].get('title'))} is saved',
+                                            // snackPosition: SnackPosition.BOTTOM,);
+                                          });
+                                        },
+                                        child: Icon(Icons.favorite)),
+                                  ),
+                                ]),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -204,16 +189,30 @@ class _RecipiesCardState extends State<RecipiesCard> {
           }
         });
   }
+
+  Future<bool> addFavorite(String id, String email) async {
+    try {
+      await _firestore.collection('recipies').doc(id)
+          // .collection(id)
+          .update({"fav.${(email)}": true});
+      // .delete();
+      // .set({"status":false});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }
-  
+
 // Future<bool> removeFavorite(String id, String email) async {
 //   try {
 //     await _firestore
 //         .collection('recipies')
 //         .doc(id)
-//         .collection("email")
-//         .doc(email)
-//         .delete();
+//         .collection(id)
+//         .update({"fav.${(email)}" :true});
+//         // .delete();
 //     // .set({"status":false});
 //     return true;
 //   } catch (e) {
@@ -221,7 +220,7 @@ class _RecipiesCardState extends State<RecipiesCard> {
 //     return false;
 //   }
 // }
-//
+
 // setState(() {
 //   widget.optionSelected =
 //       !widget.optionSelected;
