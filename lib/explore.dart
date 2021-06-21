@@ -51,12 +51,12 @@ class _ExploreState extends State<Explore> {
         brightness: Brightness.light,
         elevation: 0,
         iconTheme: IconThemeData(color: blackk),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: AnimatedSearchBar(),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: EdgeInsets.only(right: 16),
+        //     child: AnimatedSearchBar(),
+        //   ),
+        // ],
       ),
       drawer: SideList(),
       body: SingleChildScrollView(
@@ -140,7 +140,12 @@ class _ExploreState extends State<Explore> {
               ),
             ),
             Container(
-              child:  PopularRecipies(),
+              child:  Column(
+                children: [
+                  PopularRecipies(),
+                  
+                ],
+              ),
             ),
           ],
         ),

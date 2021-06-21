@@ -37,7 +37,7 @@ class _WelcomState extends State<Welcom> {
             padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 15.0),
             constraints: BoxConstraints.expand(),
             child: Column(children: [
-              ProfileImage(),
+             
               StreamBuilder<QuerySnapshot>(
                   stream: db
                       .collection('users')
@@ -53,19 +53,50 @@ class _WelcomState extends State<Welcom> {
                             return Center(
                               child: Column(
                                 children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                       Text(
+                                        "Hi",
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(5),
+                                        margin: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.circular(6.0),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.white24.withOpacity(.3),
+                          offset: Offset(0.0, 8.0),
+                          blurRadius: 8.0)
+                    ]),
+                                       
+                                        child: Text(
+                                          "${user[index].get('name')}",
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   Text(
-                                    "Hi  ${user[index].get('name')}",
+                                    'Welcom to I Made It',
                                     style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
-                                  ),
-                                  Text('Welcom to I Made It',style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),)
+                                  )
                                 ],
                               ),
                             );
@@ -74,38 +105,46 @@ class _WelcomState extends State<Welcom> {
                       return CircularProgressIndicator();
                     }
                   }),
-    
+           SizedBox(height:50),
+            ProfileImage(),
+            Expanded(
+                          child: Text("Upload Your Profile \nPicture" ,textAlign: TextAlign.center ,style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),),
+            )
             ]),
           ),
-       Align(  alignment: Alignment.bottomRight,
-              child: InkWell(
-                onTap: (){
-                  Get.to(Explore());
-                },
-                              child: Container( 
-           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-            width: 100,
-                      height: 50,
-                     
-                       
-                      decoration: BoxDecoration(
-                        
-                          color: Colors.white54,
-                          borderRadius: BorderRadius.circular(6.0),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.white24.withOpacity(.3),
-                                offset: Offset(0.0, 8.0),
-                                blurRadius: 8.0)
-                          ]),
-                           child: Center(child: Text("Skip",style: TextStyle(
-                             fontWeight: FontWeight.bold
-                           ),)),),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: InkWell(
+              onTap: () {
+                Get.to(Explore());
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                width: 100,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.white54,
+                    borderRadius: BorderRadius.circular(6.0),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.white24.withOpacity(.3),
+                          offset: Offset(0.0, 8.0),
+                          blurRadius: 8.0)
+                    ]),
+                child: Center(
+                    child: Text(
+                  "Skip",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
               ),
-                        
-    )
+            ),
+          )
         ],
       ),
-   );
+    );
   }
 }

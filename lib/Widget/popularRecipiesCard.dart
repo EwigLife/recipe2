@@ -20,10 +20,11 @@ class _PopularRecipiesState extends State<PopularRecipies> {
     print(email);
     return email.toString();
   }
+  bool check=false;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: db.collection('recipies').snapshots(),
+        stream: db.collection('recipies').where("views",isGreaterThan:500).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var recipies = snapshot.data.docs;
@@ -33,6 +34,20 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                 itemCount: recipies.length,
                 itemBuilder: (context, index) {
                   var number = recipies[index].get('views');
+                   try {
+                    if (recipies[index]
+                            .get('fav.${(_auth.currentUser.email)}') ==
+                        true) {
+                      check = true;
+                    }
+                    if (recipies[index]
+                            .get('fav.${(_auth.currentUser.email)}') ==
+                        false) {
+                      check = false;
+                    }
+                  } catch (e) {
+                    check = false;
+                  }
                   return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -162,7 +177,7 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                                                   // snackPosition: SnackPosition.BOTTOM,);
                                                 });
                                               },
-                                              child: Icon(Icons.favorite)),
+                                              child: Icon(Icons.favorite,color: check?Colors.red:Colors.black)),
                                         ),
                                       ],
                                     ),
