@@ -48,6 +48,21 @@ class _RecipiesCardState extends State<RecipiesCard> {
                 itemBuilder: (context, index) {
                   number = recipies[index].get('views');
 
+                  try {
+                    if (recipies[index]
+                            .get('fav.${(_auth.currentUser.email)}') ==
+                        true) {
+                      check = true;
+                    }
+                    if (recipies[index]
+                            .get('fav.${(_auth.currentUser.email)}') ==
+                        false) {
+                      check = false;
+                    }
+                  } catch (e) {
+                    check = false;
+                  }
+
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -68,8 +83,8 @@ class _RecipiesCardState extends State<RecipiesCard> {
                       );
                     },
                     child: Expanded(
-                                          child: Container(
-                                            height:200,
+                      child: Container(
+                        height: 200,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(
@@ -110,7 +125,8 @@ class _RecipiesCardState extends State<RecipiesCard> {
                             buildTextSubTitleVariation2(
                                 recipies[index].get('dec')),
                             Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   buildCalories(
                                       recipies[index].get('kcal') + " Kcal"),
@@ -146,7 +162,8 @@ class _RecipiesCardState extends State<RecipiesCard> {
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.all(
-                                                            Radius.circular(10))),
+                                                            Radius.circular(
+                                                                10))),
                                               ));
                                             }
                                             if (recipies[index].get(
@@ -167,15 +184,17 @@ class _RecipiesCardState extends State<RecipiesCard> {
                                                 shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.all(
-                                                            Radius.circular(10))),
+                                                            Radius.circular(
+                                                                10))),
                                               ));
                                             }
-
-                                            // showSnackBar('${(recipies[index].get('title'))} is saved',
-                                            // snackPosition: SnackPosition.BOTTOM,);
                                           });
                                         },
-                                        child: Icon(Icons.favorite)),
+                                        child: Icon(
+                                          Icons.favorite,
+                                          color:
+                                              check ? Colors.red : Colors.black,
+                                        )),
                                   ),
                                 ]),
                           ],
@@ -204,75 +223,3 @@ class _RecipiesCardState extends State<RecipiesCard> {
     }
   }
 }
-
-// Future<bool> removeFavorite(String id, String email) async {
-//   try {
-//     await _firestore
-//         .collection('recipies')
-//         .doc(id)
-//         .collection(id)
-//         .update({"fav.${(email)}" :true});
-//         // .delete();
-//     // .set({"status":false});
-//     return true;
-//   } catch (e) {
-//     print(e);
-//     return false;
-//   }
-// }
-
-// setState(() {
-//   widget.optionSelected =
-//       !widget.optionSelected;
-//   if (widget.optionSelected) {
-//     final String email =
-//         _auth.currentUser.email;
-//     createFavorite(
-//         recipies[index].get('id'), email);
-//   } else {
-//     final String email =
-//         _auth.currentUser.email;
-//     removeFavorite(
-//         recipies[index].get('id'), email);
-//   }
-// });
-// ignore: unused_label
-//    stream: db.collection('recipies').doc(id).snapshots();
-//  builder: (context, snapshot) {
-//           if (snapshot.hasData) {
-//             var recipies = snapshot.data.docs;
-//             return ListView.builder(
-//                 physics: BouncingScrollPhysics(),
-//                 scrollDirection: Axis.horizontal,
-//                 shrinkWrap: true,
-//                 itemCount: recipies.length,
-//                 itemBuilder: (context, index) {
-//                    number=  recipies[index].get('views');
-//                 }
-//             );
-//                 }
-//                 };
-
-// setState(() {
-//   number++;
-// });
-//  // GestureDetector(
-//   onTap: () => createFavorite(recipies[index].get('id')),
-//   //  insertdata(recipies[index].get('title'),  recipies[index].get('carb'), recipies[index].get('dec'), recipies[index].get('imgUrl'), recipies[index].get('ingr'),  recipies[index].get('kcal'), recipies[index].get('method'), recipies[index].get('protein'),),
-
-//   // {
-//   //   setState(() {
-//   //     widget.optionSelected =
-//   //         !widget.optionSelected;
-//   //     if (widget.optionSelected) {
-//   //       insertdata(recipies[index].get('title'),  recipies[index].get('carb'), recipies[index].get('dec'), recipies[index].get('imgUrl'), recipies[index].get('ingr'),  recipies[index].get('kcal'), recipies[index].get('method'), recipies[index].get('protein'),);
-//   //     } else {
-//   //       return null;
-//   //     }
-//   //   });
-//   // },
-//   child: Container(
-//       width: 35,
-//       height: 35,
-//       child: Icon(Icons.favorite_border)),
-// ),

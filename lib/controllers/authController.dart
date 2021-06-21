@@ -76,7 +76,6 @@ class AuthController extends GetxController {
       ],
     );
     UserModel _user = UserModel();
-
     try {
       GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
       GoogleSignInAuthentication _googleAuth = await _googleUser.authentication;
@@ -90,7 +89,6 @@ class AuthController extends GetxController {
         Database().createNewUser(_user);
       }
       await Get.to(Explore());
-
       retVal = 'success';
     } catch (e) {
       retVal = e.message;
