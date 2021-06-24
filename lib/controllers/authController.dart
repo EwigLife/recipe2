@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe2/Services/database.dart';
@@ -67,6 +68,9 @@ class AuthController extends GetxController {
     }
   }
 
+void skipUser()async{
+  UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+}
   Future<String> signInWithGoogle() async {
     String retVal = 'Error';
     GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -122,7 +126,7 @@ class AuthController extends GetxController {
   //       _user.name = _authResult.user.displayName;
   //       Database().createNewUser(_user);
   //     }
-  //     await Get.to(Home());
+  //     await Get.to(Explore());
   //     retVal = 'success';
   //   } catch (e) {
   //     retVal = e.message;

@@ -31,7 +31,7 @@ bool fav;
           child: StreamBuilder<QuerySnapshot>(
               stream: db
                   .collection('recipies')
-                  .where('fav.${(_auth.currentUser.email)}', isEqualTo: true)
+                  .where('fav.${(_auth.currentUser.uid)}', isEqualTo: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -139,7 +139,7 @@ bool fav;
                                                 setState(() {
                                                   addFavorite(
                                                       recipies[index].get('id'),
-                                                      _auth.currentUser.email);
+                                                      _auth.currentUser.uid);
                                                 });
                                               },
                                               child: Icon(Icons.favorite,color: Colors.red,)),

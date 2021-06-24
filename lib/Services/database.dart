@@ -14,6 +14,7 @@ class Database {
         'name': user.name,
         'email': user.email,
         'imageUrl': null,
+        'id':user.id,
         // 'imageUrl':null,
       });
       return true;
@@ -30,7 +31,7 @@ class Database {
     await _firestore.collection('users').doc(uid).get();
 
 
-    return UserModel.fromDocumentSnapshot(documentSnapshot: _doc);
+    return UserModel.fromDocumentSnapshot(doc: _doc);
   } catch (e) {
     print(e);
     rethrow;

@@ -11,6 +11,31 @@ BoxShadow kBoxShadow = BoxShadow(
   blurRadius: 8,
   offset: Offset(0, 0),
 );
+
+
+
+numberConvert(var number){
+    double convert;
+    double convert2;
+    if(number>=1000 && number<=1000000)
+    
+    {
+      convert = number/1000;
+       convert2  = double.parse((convert).toStringAsFixed(2));
+      return Text("$convert2 k");
+    }
+    else if(number>=1000000)
+    {
+       convert= number/1000000;
+     convert2  = double.parse((convert).toStringAsFixed(2));
+
+    
+      return Text("$convert2 m");
+    }
+    else{
+      return Text("$number ");
+    }
+  }
 // final ThemeData lightTheme = ThemeData(
 //     fontFamily: "Poppins",
 //     backgroundColor: whitee,

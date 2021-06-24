@@ -92,8 +92,7 @@ bool optionSelected = false;
                 padding: EdgeInsets.only(left: 18),
                 child: Stack(
                   children: [
-                    Expanded(
-                          child: Column(
+                    Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -112,7 +111,6 @@ bool optionSelected = false;
             buildNutrition(this.widget.protein, "Protein", "g"),
                         ],
                       ),
-                    ),
                     Positioned(
                       left: MediaQuery.of(context).size.height / 4,
                       top: MediaQuery.of(context).size.height / 40,

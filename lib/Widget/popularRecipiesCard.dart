@@ -19,7 +19,9 @@ class _PopularRecipiesState extends State<PopularRecipies> {
     final email = user.email;
     print(email);
     return email.toString();
+    
   }
+  
   bool check=false;
   @override
   Widget build(BuildContext context) {
@@ -36,12 +38,12 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                   var number = recipies[index].get('views');
                    try {
                     if (recipies[index]
-                            .get('fav.${(_auth.currentUser.email)}') ==
+                            .get('fav.${(_auth.currentUser.uid)}') ==
                         true) {
                       check = true;
                     }
                     if (recipies[index]
-                            .get('fav.${(_auth.currentUser.email)}') ==
+                            .get('fav.${(_auth.currentUser.uid)}') ==
                         false) {
                       check = false;
                     }
@@ -86,7 +88,7 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                               ),
                             ),
                             Expanded(
-                              child: Padding(
+                              child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +108,8 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                                                  SizedBox(width: 10),
                                         Row(
                                           children: [
-                                            Text('${number}'),
+                                            numberConvert(number),
+                                            // Text('${number}'),
                                             SizedBox(width: 10),
                                             Icon(Icons.remove_red_eye_rounded),
                                             SizedBox(width: 10),
@@ -118,10 +121,10 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                                               onPressed: () {
                                                 addFavorite(
                                                     recipies[index].get('id'),
-                                                    _auth.currentUser.email);
+                                                    _auth.currentUser.uid);
                                                 setState(() {
                                                   if (recipies[index].get(
-                                                          'fav.${(_auth.currentUser.email)}') ==
+                                                          'fav.${(_auth.currentUser.uid)}') ==
                                                       true) {
                                                     Scaffold.of(context)
                                                         .showSnackBar(
@@ -147,7 +150,7 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                                                     ));
                                                   }
                                                   if (recipies[index].get(
-                                                          'fav.${(_auth.currentUser.email)}') ==
+                                                          'fav.${(_auth.currentUser.uid)}') ==
                                                       false) {
                                                     Scaffold.of(context)
                                                         .showSnackBar(

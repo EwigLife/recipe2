@@ -47,8 +47,10 @@ dependencies:
   sqflite: any  
   path_provider: any
   path: any
-  hive: any
-  hive_flutter: any
+  http: 
+  # flutter_facebook_login: ^3.0.0 
+  # flutter_facebook_auth: 
+ 
 
  
 

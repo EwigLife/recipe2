@@ -10,6 +10,11 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
    void initState() {
     // TODO: implement initState
     super.initState();
@@ -20,7 +25,7 @@ class _SplashState extends State<Splash> {
     return new Timer(duration, route);
   }
 route() {
-   Get.to(Explore()) ;
+   Get.offAll(Explore()) ;
   }
   
   @override

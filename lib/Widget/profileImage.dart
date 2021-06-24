@@ -104,7 +104,7 @@ class _ProfileImageState extends State<ProfileImage> {
     return StreamBuilder<QuerySnapshot>(
         stream: db
             .collection('users')
-            .where('email', isEqualTo: _auth.currentUser.email)
+            .where('id', isEqualTo: _auth.currentUser.uid)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {

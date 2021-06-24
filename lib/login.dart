@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe2/explore.dart';
 
 import 'Widget/loginFormCard.dart';
 import 'Widget/SocialIcons.dart';
 
-class Login extends StatefulWidget {
+ class Login extends StatefulWidget {
   @override
   _LoginState createState() => new _LoginState();
 }
@@ -35,7 +37,7 @@ class _LoginState extends State<Login> {
         child: Container(
           width: 120,
           height: 1.0,
-          color: Colors.black26.withOpacity(.2),
+          color: Colors.black26.withOpacity(0.4),
         ),
       );
 
@@ -53,7 +55,7 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.only(top: 20.0),
                 child: Image.asset("assets/images/foods.png"),
               ),
-              Expanded(child: Container()),
+              // Expanded(child: Container()),
             ],
           ),
           SingleChildScrollView(
@@ -65,12 +67,13 @@ class _LoginState extends State<Login> {
                     height: 80,
                   ),
                   LoginFormCard(),
-                  SizedBox(height: 30),
-                  Column(
-                    children: [],
-                  ),
+                  SizedBox(height: 20),
+                  // Column(
+                  //   children: [],
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text("Social Login",
                           style: TextStyle(
@@ -81,11 +84,11 @@ class _LoginState extends State<Login> {
                   ),
                   horizontalLine(),
                   SizedBox(
-                    height: 25,
+                    height: 20,
                   ),
                   Socialicon(),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -106,13 +109,14 @@ class _LoginState extends State<Login> {
                                 fontWeight: FontWeight.bold)),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
                   InkWell(
-                    onTap: () {
+                    onTap: (){
+                     skipUser();
+                        // await controller.skipUser();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Explore()));
                     },
@@ -120,6 +124,7 @@ class _LoginState extends State<Login> {
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xFF27AE60),
+                            fontWeight: FontWeight.bold,
                             fontFamily: "Poppins-Bold")),
                   )
                 ],
@@ -129,5 +134,27 @@ class _LoginState extends State<Login> {
         ],
       ),
     );
+  }
+   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<bool> skipUser( ) async {
+      FirebaseAuth _auth = FirebaseAuth.instance;
+                      final user = await _auth.signInAnonymously();
+                      print("object="+ _auth.currentUser.uid);
+    try {
+      await _firestore.collection('users').doc(_auth.currentUser.uid).set(
+        {
+// "email":_auth.currentUser.uid+"@gmail.com",
+"imageUrl":null,
+"id":_auth.currentUser.uid
+// "name":_auth.currentUser.uid
+        }
+      );
+      // .delete();
+      // .set({"status":false});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }
