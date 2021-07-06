@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:recipe2/Screen/forgotPassword.dart';
 import 'package:recipe2/controllers/authController.dart';
-import 'forgotPassword.dart';
-
 class LoginFormCard extends GetWidget<AuthController> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
