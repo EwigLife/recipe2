@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe2/Utils/constants.dart';
-import 'package:recipe2/Widget/detail.dart';
 import 'package:recipe2/Widget/shared.dart';
+import 'detail.dart';
 
 class FavoriteRecipe extends StatefulWidget {
   @override
@@ -137,7 +137,7 @@ bool fav;
      highlightColor: Colors.transparent,
                                               onTap: () {
                                                 setState(() {
-                                                  addFavorite(
+                                                  removeFavorite(
                                                       recipies[index].get('id'),
                                                       _auth.currentUser.uid);
                                                 });
@@ -162,7 +162,7 @@ bool fav;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<bool> addFavorite(String id, String email,) async {
+  Future<bool> removeFavorite(String id, String email,) async {
     try {
       await _firestore.collection('recipies').doc(id)
           // .collection(id)

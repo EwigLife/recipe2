@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipe2/category/exploreCategory.dart';
-import 'package:recipe2/welcomScreen.dart';
-import '../explore.dart';
+import 'package:recipe2/Screen/exploreCategory.dart';
+
 
 category(context) {
   

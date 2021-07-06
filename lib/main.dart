@@ -8,8 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:recipe2/Utils/root.dart';
 import 'package:recipe2/controllers/userController.dart';
-import 'package:recipe2/explore.dart';
-import 'package:recipe2/signUp.dart';
+import 'Screen/explore.dart';
+import 'Screen/signUp.dart';
 import 'controllers/bindings/bindings.dart';
 
 void main() async {

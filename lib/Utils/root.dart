@@ -1,10 +1,9 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe2/Screen/login.dart';
+import 'package:recipe2/Screen/splashScreen.dart';
 import 'package:recipe2/controllers/authController.dart';
-import 'package:recipe2/controllers/userController.dart';
-import 'package:recipe2/explore.dart';
-import 'package:recipe2/login.dart';
-import 'package:recipe2/splashScreen.dart';
+
 
 class Root extends GetWidget<AuthController> {
   @override

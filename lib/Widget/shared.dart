@@ -66,19 +66,6 @@ buildTextSubTitleVariation(String text) {
   );
 }
 
-// buildTextSubTitleVariation2(String text){
-//   return Padding(
-//     padding: EdgeInsets.only(bottom: 8),
-//     child: Text(
-//       text,
-//       overflow: TextOverflow.ellipsis,
-//       style: TextStyle(
-//         fontSize: 16,
-//         color: Colors.grey[400],
-//       ),
-//     ),
-//   );
-// }
 
 buildRecipeTitle(String text) {
   return Padding(

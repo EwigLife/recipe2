@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe2/Utils/constants.dart';
 import 'package:recipe2/Widget/category.dart';
-import 'package:recipe2/Widget/detail.dart';
 import 'package:recipe2/Widget/drawer.dart';
 import 'package:recipe2/Widget/popularRecipiesCard.dart';
 import 'package:recipe2/Widget/recipiesCard.dart';

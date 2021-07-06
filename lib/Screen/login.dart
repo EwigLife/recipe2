@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe2/explore.dart';
-
-import 'Widget/loginFormCard.dart';
-import 'Widget/SocialIcons.dart';
+import 'package:recipe2/Widget/SocialIcons.dart';
+import 'package:recipe2/Widget/loginFormCard.dart';
+import 'explore.dart';
 
  class Login extends StatefulWidget {
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:recipe2/Widget/SocialIcons.dart';
+import 'package:recipe2/Widget/singupFormCard.dart';
 
-import 'package:recipe2/login.dart';
-import 'Widget/singupFormCard.dart';
-import 'Widget/SocialIcons.dart';
+import 'login.dart';
 
 class SignUp extends StatefulWidget {
   @override

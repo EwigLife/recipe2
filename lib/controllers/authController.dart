@@ -2,14 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:recipe2/Screen/explore.dart';
+import 'package:recipe2/Screen/login.dart';
+import 'package:recipe2/Screen/waitAfterSignup.dart';
 import 'package:recipe2/Services/database.dart';
-import 'package:recipe2/Widget/waitAfterSignup.dart';
 import 'package:recipe2/controllers/userController.dart';
-import 'package:recipe2/explore.dart';
-import 'package:recipe2/login.dart';
 import 'package:recipe2/models/user.dart';
-
-import '../login.dart';
 
 class AuthController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -110,27 +108,5 @@ void skipUser()async{
           snackPosition: SnackPosition.BOTTOM);
     }
   }
-  // Future<String> signInFacebook() async {
-  //   String retVal = 'Error';
-  //   var facebookLogin = FacebookLogin();
-  //   var result = await facebookLogin.logIn(['email', 'public_profile']);
-  //   UserModel _user = UserModel();
-  //   try {
-  //     FacebookAccessToken myToken = result.accessToken;
-  //     AuthCredential credential =
-  //         FacebookAuthProvider.credential(myToken.token);
-  //     UserCredential _authResult = await _auth.signInWithCredential(credential);
-  //     if (_authResult.additionalUserInfo.isNewUser) {
-  //       _user.id = _authResult.user.uid;
-  //       _user.email = _authResult.user.email;
-  //       _user.name = _authResult.user.displayName;
-  //       Database().createNewUser(_user);
-  //     }
-  //     await Get.to(Explore());
-  //     retVal = 'success';
-  //   } catch (e) {
-  //     retVal = e.message;
-  //   }
-  //   return retVal;
-  // }
+
 }

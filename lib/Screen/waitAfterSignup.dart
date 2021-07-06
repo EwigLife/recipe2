@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipe2/explore.dart';
-import 'package:recipe2/welcomScreen.dart';
+import 'package:recipe2/Screen/welcomScreen.dart';
 
 class Waiting extends StatefulWidget {
   @override

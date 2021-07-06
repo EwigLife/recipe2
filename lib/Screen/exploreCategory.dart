@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:recipe2/Utils/constants.dart';
-import 'package:recipe2/Widget/detail.dart';
 import 'package:recipe2/Widget/shared.dart';
+
+import 'detail.dart';
 
 
 class ExploreCategory extends StatefulWidget {

@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:recipe2/Widget/waitAfterSignup.dart';
+import 'package:recipe2/Screen/login.dart';
+import 'package:recipe2/Screen/waitAfterSignup.dart';
 import 'package:recipe2/controllers/authController.dart';
-import 'package:recipe2/login.dart';
-import 'package:recipe2/welcomScreen.dart';
-
-import '../explore.dart';
-
 class SignUpFormCard extends GetWidget<AuthController> {
   final TextEditingController uidController = TextEditingController();
   final TextEditingController emailController = TextEditingController();

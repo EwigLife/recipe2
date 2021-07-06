@@ -3,8 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipe2/Widget/profileImage.dart';
-import 'package:recipe2/explore.dart';
-import 'package:recipe2/splashScreen.dart';
+import 'explore.dart';
 
 class Welcom extends StatefulWidget {
   @override

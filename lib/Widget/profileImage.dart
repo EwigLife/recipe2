@@ -10,7 +10,6 @@ import 'package:path/path.dart';
 import 'package:recipe2/Services/database.dart';
 import 'package:recipe2/Utils/constants.dart';
 import 'package:recipe2/controllers/userController.dart';
-import '../explore.dart';
 
 class ProfileImage extends StatefulWidget {
   @override

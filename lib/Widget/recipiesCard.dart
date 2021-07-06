@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe2/Screen/detail.dart';
 import 'package:recipe2/Utils/constants.dart';
-import 'package:recipe2/Widget/detail.dart';
 import 'package:recipe2/Widget/shared.dart';
-
 
 class RecipiesCard extends StatefulWidget {
   @override
@@ -45,13 +44,11 @@ class _RecipiesCardState extends State<RecipiesCard> {
                   number = recipies[index].get('views');
 
                   try {
-                    if (recipies[index]
-                            .get('fav.${(_auth.currentUser.uid)}') ==
+                    if (recipies[index].get('fav.${(_auth.currentUser.uid)}') ==
                         true) {
                       check = true;
                     }
-                    if (recipies[index]
-                            .get('fav.${(_auth.currentUser.uid)}') ==
+                    if (recipies[index].get('fav.${(_auth.currentUser.uid)}') ==
                         false) {
                       check = false;
                     }
@@ -120,19 +117,18 @@ class _RecipiesCardState extends State<RecipiesCard> {
                           buildTextSubTitleVariation2(
                               recipies[index].get('dec')),
                           Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 buildCalories(
                                     recipies[index].get('kcal') + " Kcal"),
                                 SizedBox(width: 5),
                                 Row(
                                   children: [
-                                     numberConvert(number),
+                                    numberConvert(number),
                                     // Text('${number}'),
-                                    SizedBox(width: 5),
+                                    SizedBox(width: 3),
                                     Icon(Icons.remove_red_eye_rounded),
-                                    SizedBox(width: 5),
+                                    SizedBox(width: 0),
                                   ],
                                 ),
                                 Expanded(
@@ -144,23 +140,11 @@ class _RecipiesCardState extends State<RecipiesCard> {
                                           if (recipies[index].get(
                                                   'fav.${(_auth.currentUser.uid)}') ==
                                               true) {
-                                            Scaffold.of(context)
-                                                .showSnackBar(new SnackBar(
-                                              content:
-                                                  new Text(' Already saved'),
-                                              padding: EdgeInsets.all(10.0),
-                                              margin: EdgeInsets.all(10.0),
-                                              duration:
-                                                  const Duration(seconds: 2),
-                                              backgroundColor: Colors.red,
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10))),
-                                            ));
+                                            removeFavorite(
+                                                recipies[index].get('id'),
+                                                _auth.currentUser.uid);
+                                           
+                                            
                                           }
                                           if (recipies[index].get(
                                                   'fav.${(_auth.currentUser.uid)}') ==
@@ -180,8 +164,7 @@ class _RecipiesCardState extends State<RecipiesCard> {
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(
-                                                              10))),
+                                                          Radius.circular(10))),
                                             ));
                                           }
                                         });
@@ -209,6 +192,23 @@ class _RecipiesCardState extends State<RecipiesCard> {
       await _firestore.collection('recipies').doc(id)
           // .collection(id)
           .update({"fav.${(email)}": true});
+      // .delete();
+      // .set({"status":false});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> removeFavorite(
+    String id,
+    String email,
+  ) async {
+    try {
+      await _firestore.collection('recipies').doc(id)
+          // .collection(id)
+          .update({"fav.${(email)}": false});
       // .delete();
       // .set({"status":false});
       return true;
