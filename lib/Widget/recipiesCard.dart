@@ -105,7 +105,7 @@ class _RecipiesCardState extends State<RecipiesCard> {
                                       image: NetworkImage(
                                         recipies[index].get('imgUrl'),
                                       ),
-                                      fit: BoxFit.fill),
+                                      fit: BoxFit.cover),
                                 ),
                               ),
                             ),
@@ -128,7 +128,7 @@ class _RecipiesCardState extends State<RecipiesCard> {
                                     // Text('${number}'),
                                     SizedBox(width: 3),
                                     Icon(Icons.remove_red_eye_rounded),
-                                    SizedBox(width: 0),
+                                   
                                   ],
                                 ),
                                 Expanded(

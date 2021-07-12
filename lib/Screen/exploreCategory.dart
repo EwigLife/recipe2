@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -15,7 +16,8 @@ class ExploreCategory extends StatefulWidget {
 }
 
 class _ExploreCategoryState extends State<ExploreCategory> {
-  
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    bool check = false;
   @override
   Widget build(BuildContext context) {
      return Scaffold(
@@ -40,6 +42,18 @@ class _ExploreCategoryState extends State<ExploreCategory> {
                       itemCount: recipies.length,
                       itemBuilder: (context, index) {
 
+                  try {
+                    if (recipies[index].get('fav.${(_auth.currentUser.uid)}') ==
+                        true) {
+                      check = true;
+                    }
+                    if (recipies[index].get('fav.${(_auth.currentUser.uid)}') ==
+                        false) {
+                      check = false;
+                    }
+                  } catch (e) {
+                    check = false;
+                  }
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -101,10 +115,13 @@ class _ExploreCategoryState extends State<ExploreCategory> {
                                 buildTextSubTitleVariation2(
                                     recipies[index].get('dec')),
                                 Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                       SizedBox(width: 50),
                                       buildCalories(
                                           recipies[index].get('kcal') + " Kcal"),
+                                      SizedBox(width: 50),
                                       Row(
                                         children: [
                                           Text('${recipies[index].get('views')}'),
@@ -113,6 +130,51 @@ class _ExploreCategoryState extends State<ExploreCategory> {
                                           SizedBox(width: 10),
                                         ],
                                       ),
+                                           Expanded(
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        addFavorite(recipies[index].get('id'),
+                                            _auth.currentUser.uid);
+                                        setState(() {
+                                          if (recipies[index].get(
+                                                  'fav.${(_auth.currentUser.uid)}') ==
+                                              true) {
+                                            removeFavorite(
+                                                recipies[index].get('id'),
+                                                _auth.currentUser.uid);
+                                           
+                                            
+                                          }
+                                          if (recipies[index].get(
+                                                  'fav.${(_auth.currentUser.uid)}') ==
+                                              false) {
+                                            Scaffold.of(context)
+                                                .showSnackBar(new SnackBar(
+                                              content: new Text(
+                                                  '${(recipies[index].get('title'))} is saved'),
+                                              backgroundColor:
+                                                  Color(0xFF27AE60),
+                                              padding: EdgeInsets.all(10.0),
+                                              margin: EdgeInsets.all(10.0),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10))),
+                                            ));
+                                          }
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color:
+                                            check ? Colors.red : Colors.black,
+                                      )),
+                                ),
+                           
                                     ]),
                               ],
                             ),
@@ -127,5 +189,36 @@ class _ExploreCategoryState extends State<ExploreCategory> {
        ),
      );
  
+  }
+  Future<bool> addFavorite(String id, String email) async {
+    try {
+      await _firestore.collection('recipies').doc(id)
+          // .collection(id)
+          .update({"fav.${(email)}": true});
+      // .delete();
+      // .set({"status":false});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
+  Future<bool> removeFavorite(
+    String id,
+    String email,
+  ) async {
+    try {
+      await _firestore.collection('recipies').doc(id)
+          // .collection(id)
+          .update({"fav.${(email)}": false});
+      // .delete();
+      // .set({"status":false});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

@@ -3,15 +3,24 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:recipe2/Screen/login.dart';
 import 'package:recipe2/Screen/waitAfterSignup.dart';
 import 'package:recipe2/controllers/authController.dart';
+
 class SignUpFormCard extends GetWidget<AuthController> {
   final TextEditingController uidController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  Future<void> _saveForm() async {
+    final isValid = _formKey.currentState.validate();
+    if (!isValid) {
+      return;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
         children: [
           new Container(
@@ -53,6 +62,12 @@ class SignUpFormCard extends GetWidget<AuthController> {
                         hintText: "Username",
                         hintStyle:
                             TextStyle(color: Colors.grey, fontSize: 12.0)),
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return 'Text is empty';
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 15,
@@ -66,6 +81,12 @@ class SignUpFormCard extends GetWidget<AuthController> {
                         hintText: "Email@...com",
                         hintStyle:
                             TextStyle(color: Colors.grey, fontSize: 12.0)),
+                    validator: (text) {
+                      if (!(text.contains('@')) && text.isNotEmpty) {
+                        return "Enter a valid email address!";
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 15,
@@ -80,6 +101,12 @@ class SignUpFormCard extends GetWidget<AuthController> {
                         hintText: "Password",
                         hintStyle:
                             TextStyle(color: Colors.grey, fontSize: 12.0)),
+                    validator: (text) {
+                      if (!(text.length > 5) && text.isNotEmpty) {
+                        return "Enter valid name of more then 5 characters!";
+                      }
+                      return null;
+                    },
                   ),
                   SizedBox(
                     height: 15,
@@ -105,7 +132,6 @@ class SignUpFormCard extends GetWidget<AuthController> {
             child: Container(
               width: 130,
               height: 50,
-              
               decoration: BoxDecoration(
                   color: Color(0xFF27AE60),
                   borderRadius: BorderRadius.circular(6.0),
@@ -119,21 +145,28 @@ class SignUpFormCard extends GetWidget<AuthController> {
                 color: Colors.transparent,
                 child: GestureDetector(
                   child: InkWell(
-                    onTap: () {
-                      controller.createUser(
+                    onTap: () async {
+                      if (!_formKey.currentState.validate()) {
+                        await _saveForm();
+                      } else {
+                        controller.createUser(
                           nameController.text,
                           emailController.text,
                           passwordController.text,
                           uidController.text,
-                         );
-                      if (controller != null) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Waiting()));
-                      } else {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Login()));
+                        );
+                        if (controller != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Waiting()));
+                        }
                       }
-                   
+
+                      // } else {
+                      //   Navigator.push(context,
+                      //       MaterialPageRoute(builder: (context) => Login()));
+                      // }
                     },
                     child: Center(
                       child: Text("SIGN UP",

@@ -21,13 +21,13 @@ numberConvert(var number){
     
     {
       convert = number/1000;
-       convert2  = double.parse((convert).toStringAsFixed(2));
+       convert2  = double.parse((convert).toStringAsFixed(1));
       return Text("$convert2 k");
     }
     else if(number>=1000000)
     {
        convert= number/1000000;
-     convert2  = double.parse((convert).toStringAsFixed(2));
+     convert2  = double.parse((convert).toStringAsFixed(1));
 
     
       return Text("$convert2 m");

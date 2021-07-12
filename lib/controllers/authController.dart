@@ -100,6 +100,8 @@ void skipUser()async{
 
   void signOut() async {
     try {
+      final googleSignIn =GoogleSignIn();
+      await googleSignIn.signOut();
       await _auth.signOut();
       Get.to(() => Login());
       Get.find<UserController>().clear();
