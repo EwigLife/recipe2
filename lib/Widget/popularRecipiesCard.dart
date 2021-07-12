@@ -33,7 +33,7 @@ class _PopularRecipiesState extends State<PopularRecipies> {
             return ListView.builder(
                 physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: recipies.length,
+                itemCount: 20,
                 itemBuilder: (context, index) {
                   var number = recipies[index].get('views');
                    try {

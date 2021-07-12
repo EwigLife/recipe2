@@ -39,7 +39,7 @@ class _RecipiesCardState extends State<RecipiesCard> {
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                itemCount: recipies.length,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   number = recipies[index].get('views');
 
