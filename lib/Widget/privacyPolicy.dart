@@ -10,6 +10,7 @@ privacy(context) {
           contentPadding: EdgeInsets.all(15.0),
           content: Container(
             width: 300.0,
+            
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
