@@ -1,8 +1,12 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:recipe2/Utils/constants.dart';
 import 'package:recipe2/Widget/shared.dart';
+import 'package:recipe2/ads_helper.dart';
 
 class Detail extends StatefulWidget {
   final String title;
@@ -41,25 +45,85 @@ class _DetailState extends State<Detail> {
     return email.toString();
   }
 bool optionSelected = false;
+ BannerAd _bannerAd;
+ bool _isBannerAdReady = false;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  void initState() {
+  void initState(){
     super.initState();
+  
+     _bannerAd = BannerAd(
+    adUnitId: AdHelper.bannerAdUnitId,
+    request: AdRequest(),
+    size: AdSize.banner,
+    listener: BannerAdListener(
+      onAdLoaded: (_) {
+        setState(() {
+          _isBannerAdReady = true;
+        });
+      },
+      onAdFailedToLoad: (ad, err) {
+        print('Failed to load a banner ad: ${err.message}');
+        _isBannerAdReady = false;
+        ad.dispose();
+      },
+    ),
+  );
+   
+
+  _bannerAd.load();
+
+
     this.widget.views++;
     optionSelected = false ?? true;
+    //  Admob.requestTrackingAuthorization();
+   
     print("init");
+  }
+   @override
+  void dispose() {
+    super.dispose();
+    _anchoredBanner?.dispose();
+  
   }
 
   @override
   Widget build(BuildContext context) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+      home: Builder(builder: (BuildContext context) {
+        if (!_loadingAnchoredBanner) {
+          _loadingAnchoredBanner = true;
+          _createAnchoredBanner(context);
+        }
     return Scaffold(
+      
       backgroundColor: Colors.grey[50],
+
+        bottomNavigationBar: Row(children: [
+          
+                if (_anchoredBanner != null)
+                  Container(
+                    color: Colors.green,
+                    width: _anchoredBanner.size.width.toDouble(),
+                    height: _anchoredBanner.size.height.toDouble(),
+                    child: AdWidget(ad: _anchoredBanner),
+                  ),
+        ],),
+        // Container(
+        //   height: 70,
+        //   child: AdWidget(ad: myBanner)
+        // ,),
+      // AdmobBanner(
+      //   adUnitId:getBannerAdUnitId(),
+      //   adSize: AdmobBannerSize.BANNER,
+      // ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         brightness: Brightness.light,
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
-            Navigator.pop(context);
+            Get.back();
             createViews(this.widget.id);
           },
           child: Icon(
@@ -153,6 +217,9 @@ bool optionSelected = false;
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+      }
+      )
+      );
   }
 
   Widget buildNutrition(
@@ -235,6 +302,51 @@ bool optionSelected = false;
       return false;
     }
   }
+  static final AdRequest request = AdRequest(
+    keywords: <String>['foo', 'bar'],
+    contentUrl: 'http://foo.com/bar.html',
+    nonPersonalizedAds: true,
+  );
+  BannerAd _anchoredBanner;
+  bool _loadingAnchoredBanner = false;
+
+   Future<void> _createAnchoredBanner(BuildContext context) async {
+    final AnchoredAdaptiveBannerAdSize size =
+        await AdSize.getAnchoredAdaptiveBannerAdSize(
+      Orientation.portrait,
+      MediaQuery.of(context).size.width.truncate(),
+    );
+
+    if (size == null) {
+      print('Unable to get height of anchored banner.');
+      return;
+    }
+
+    final BannerAd banner = BannerAd(
+      size: size,
+      request: request,
+      adUnitId: Platform.isAndroid
+          ? 'ca-app-pub-3940256099942544/6300978111'
+          : 'ca-app-pub-3940256099942544/2934735716',
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          print('$BannerAd loaded.');
+          setState(() {
+            _anchoredBanner = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          print('$BannerAd failedToLoad: $error');
+          ad.dispose();
+        },
+        onAdOpened: (Ad ad) => print('$BannerAd onAdOpened.'),
+        onAdClosed: (Ad ad) => print('$BannerAd onAdClosed.'),
+      ),
+    );
+    return banner.load();
+  }
+
+
  
 }
 //  deleteData(String data) {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:recipe2/Screen/detail.dart';
 import 'package:recipe2/Utils/constants.dart';
 import 'package:recipe2/Widget/shared.dart';
@@ -26,6 +27,7 @@ class _RecipiesCardState extends State<RecipiesCard> {
   @override
   void initState() {
     super.initState();
+    _createRewardedAd();
   }
 
   @override
@@ -57,7 +59,8 @@ class _RecipiesCardState extends State<RecipiesCard> {
                   }
 
                   return GestureDetector(
-                    onTap: () {
+                    onTap: (){
+                      _showRewardedAd();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -216,5 +219,59 @@ class _RecipiesCardState extends State<RecipiesCard> {
       print(e);
       return false;
     }
+  }
+  RewardedAd _rewardedAd; 
+int maxFailedLoadAttempts = 3;
+  int _numRewardedLoadAttempts = 0;
+   static final AdRequest request = AdRequest(
+    keywords: <String>['foo', 'bar'],
+    contentUrl: 'http://foo.com/bar.html',
+    nonPersonalizedAds: true,
+  );
+   void _createRewardedAd() {
+    RewardedAd.load(
+        adUnitId: RewardedAd.testAdUnitId,
+        request: request,
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          onAdLoaded: (RewardedAd ad) {
+            print('$ad loaded.');
+            _rewardedAd = ad;
+            _numRewardedLoadAttempts = 0;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('RewardedAd failed to load: $error');
+            _rewardedAd = null;
+            _numRewardedLoadAttempts += 1;
+            if (_numRewardedLoadAttempts <= maxFailedLoadAttempts) {
+              _createRewardedAd();
+            }
+          },
+        ));
+  }
+
+  void _showRewardedAd() {
+    if (_rewardedAd == null) {
+      print('Warning: attempt to show rewarded before loaded.');
+      return;
+    }
+    _rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (RewardedAd ad) =>
+          print('ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (RewardedAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+        _createRewardedAd();
+      },
+      onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+        _createRewardedAd();
+      },
+    );
+
+    _rewardedAd.show(onUserEarnedReward: (RewardedAd ad, RewardItem reward) {
+      print('$ad with reward $RewardItem(${reward.amount}, ${reward.type}');
+    });
+    _rewardedAd = null;
   }
 }
