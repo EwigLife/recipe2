@@ -326,7 +326,7 @@ bool optionSelected = false;
       size: size,
       request: request,
       adUnitId: Platform.isAndroid
-          ? 'ca-app-pub-3940256099942544/6300978111'
+          ? 'ca-app-pub-5534506225496412/3703862866'
           : 'ca-app-pub-3940256099942544/2934735716',
       listener: BannerAdListener(
         onAdLoaded: (Ad ad) {

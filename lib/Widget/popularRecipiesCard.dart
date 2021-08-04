@@ -21,7 +21,7 @@ class _PopularRecipiesState extends State<PopularRecipies> {
     return email.toString();
     
   }
-  
+  //  int itemCount;
   bool check=false;
   @override
   Widget build(BuildContext context) {
@@ -29,11 +29,20 @@ class _PopularRecipiesState extends State<PopularRecipies> {
         stream: db.collection('recipies').where("views",isGreaterThan:500).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            var itemCount;
             var recipies = snapshot.data.docs;
+            if(recipies.length>20){
+               itemCount=20;
+            }
+            else{
+               itemCount=recipies.length;
+            }
             return ListView.builder(
                 physics: BouncingScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 20,
+                
+                itemCount: itemCount,
+                
                 itemBuilder: (context, index) {
                   var number = recipies[index].get('views');
                    try {
@@ -172,7 +181,9 @@ class _PopularRecipiesState extends State<PopularRecipies> {
                           ])));
                 });
           }
+          return null;
         });
+        
   }
 
   Future<bool> addFavorite(String id, String email) async {

@@ -36,12 +36,19 @@ class _RecipiesCardState extends State<RecipiesCard> {
         stream: db.collection('recipies').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            var itemCount;
             var recipies = snapshot.data.docs;
+              if(recipies.length>11){
+               itemCount=10;
+            }
+            else{
+               itemCount=recipies.length;
+            }
             return ListView.builder(
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                itemCount: 10,
+                itemCount: itemCount,
                 itemBuilder: (context, index) {
                   number = recipies[index].get('views');
 
@@ -230,7 +237,7 @@ int maxFailedLoadAttempts = 3;
   );
    void _createRewardedAd() {
     RewardedAd.load(
-        adUnitId: RewardedAd.testAdUnitId,
+        adUnitId:"ca-app-pub-5534506225496412/8633368297",
         request: request,
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (RewardedAd ad) {
